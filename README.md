@@ -9,7 +9,7 @@ Se busca una plataforma web donde alumnos se registren voluntariamente en el sis
 sobre una o más asignaturas del Plan de Estudios de la Escuela Nacional Preparatoria. Un alumno puede ingresar
 y solicitar una asesoría, agendando cita en un salón o laboratorio del plantel.
 
-## Dependencias
+## Requerimientos
 * NodeJS >= 8.11
 * SailsJS >= 1.0.2
 
