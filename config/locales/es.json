@@ -1,4 +1,19 @@
 {
-  "Welcome": "Bienvenido",
-  "A brand new app.": "Una nueva aplicación."
+	"Welcome": "Bienvenido",
+	"A brand new app.": "Una nueva aplicación.",
+	"Email address": "Correo electrónico",
+	"Login": "Iniciar sesión",
+	"Password": "Contraseña",
+	"Remember me": "Recordarme",
+	"Sign up": "Registrarse",
+	"Account number": "Número de cuenta",
+	"Password confirmation": "Confirmación de contraseña",
+	"App name": "Tutorías",
+	"Home": "Inicio",
+	"Subjects": "Materias",
+	"Tutorships": "Tutorías",
+	"My account": "Mi cuenta",
+	"Calendar": "Calendario",
+	"Update my account": "Actualizar mi cuenta",
+	"Log out": "Cerrar sesión"
 }

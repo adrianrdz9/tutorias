@@ -25,7 +25,31 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'pages/homepage'
+    view: 'users/login'
+  },
+
+  '/users/login': {
+    view: 'users/login'
+  },
+
+  '/users/sign_up': {
+    view: 'users/sign_up'
+  },
+
+  '/users/update': {
+    view: 'users/update'
+  },
+
+  '/users/calendar': {
+    view: 'users/calendar'
+  },
+
+  '/subjects': {
+    view: 'subjects/index'
+  },
+
+  '/tutorships': {
+    view: 'tutorships/index'
   },
 
   /***************************************************************************
