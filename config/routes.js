@@ -25,32 +25,45 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'users/login'
+    view: 'auth/login'
   },
 
-  '/users/login': {
-    view: 'users/login'
+  'GET /users/login': {
+    view: 'auth/login'
   },
 
-  '/users/sign_up': {
-    view: 'users/sign_up'
+  'POST /users/login': {
+    controller: 'Auth',
+    action: 'login'
   },
 
-  '/users/update': {
-    view: 'users/update'
+  'DELETE /logout': {
+    controller: 'Auth',
+    action: 'logout'
   },
 
-  '/users/calendar': {
-    view: 'users/calendar'
+  'GET /users/sign_up': {
+    view: 'auth/sign_up'
   },
 
-  '/subjects': {
+  'POST /users/sign_up': {
+    controller: 'Auth',
+    action: 'signup'
+  },
+
+  'GET /users/update': {
+    view: 'auth/update'
+  },
+
+  'GET /my_account/calendar': {
+    view: 'pages/calendar'
+  },
+
+  'GET /subjects': {
     view: 'subjects/index'
   },
 
-  '/tutorships': {
-    view: 'tutorships/index'
-  },
+  'GET /tutorships': 'TutorshipController.index'
 
   /***************************************************************************
   *                                                                          *
