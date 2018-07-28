@@ -5,6 +5,8 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
+const bcrypt = require('bcrypt');
+
 module.exports = {
 
   attributes: {
@@ -21,12 +23,18 @@ module.exports = {
     },
 
     name: {
-      type: 'string'
+      type: 'string',
+      required: true,
     },
 
     password: {
       type: 'string',
       required: true
+    },
+
+    is_tutor: {
+      type: 'boolean',
+      defaultsTo: false
     },
 
 
@@ -40,10 +48,23 @@ module.exports = {
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
     tutorships: {
       collection: 'tutorship',
-      via: 'user'
+      via: 'users'
     }
 
   },
+
+  beforeCreate: function(user, done){
+    bcrypt.genSalt(10, function(err, salt){
+      bcrypt.hash(user.password, salt, function(err, hash){
+        if(err){
+          sails.log(err);
+          return done(err);
+        }
+        user.password = hash;
+        return done();
+      })
+    })
+  }
 
 };
 

@@ -2,45 +2,50 @@
     <div class="row justify-content-center mt-4">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header bg-info text-light"><%= __('Sign up') %></div>
-
+                <div class="card-header bg-info text-light">
+                    <%= __('Sign up') %>
+                </div>
                 <div class="card-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="/users/sign_up">
                         <input type="hidden" name="_csrf" value="<%= _csrf %>" />
 
                         <div class="form-group row">
-                            <label for="email" class="col-sm-4 col-form-label text-md-right"><%= __('Email address') %></label>
+                            <label for="name" class="col-sm-4 col-form-label text-md-right">
+                                <%= __('Name') %>
+                            </label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email"
-                                    required autofocus> 
+                                <input type="text" id="name" class="form-control" name="name" required autofocus value="<%= typeof(old) !== 'undefined' ? old.name : ''  %>">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="account_number" class="col-sm-4 col-form-label text-md-right"><%= __('Account number') %></label>
+                            <label for="account_number" class="col-sm-4 col-form-label text-md-right">
+                                <%= __('Account number') %>
+                            </label>
 
                             <div class="col-md-6">
-                                <input id="account_number" type="text" pattern="[0-9]{9}" class="form-control" name="account_number"
-                                    required autofocus> 
+                                <input id="account_number" type="text" pattern="[0-9]{9}" class="form-control" name="account_number" required value="<%= typeof(old) !== 'undefined' ? old.account_number : ''  %>">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right"><%= __('Password') %></label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">
+                                <%= __('Password') %>
+                            </label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password"
-                                    required> 
+                                <input id="password" type="password" class="form-control" name="pass1" required>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password_confirmation" class="col-md-4 col-form-label text-md-right"><%= __('Password confirmation') %></label>
+                            <label for="password_confirmation" class="col-md-4 col-form-label text-md-right">
+                                <%= __('Password confirmation') %>
+                            </label>
 
                             <div class="col-md-6">
-                                <input id="password_confirmation" type="password" class="form-control" name="password_confirmation"
-                                    required> 
+                                <input id="password_confirmation" type="password" class="form-control" name="pass2" required>
                             </div>
                         </div>
 
@@ -52,7 +57,9 @@
                                 </button>
                             </div>
                             <div class="col-12 text-center">
-                                <a href="/users/login"><%= __('Login') %></a>
+                                <a href="/users/login">
+                                    <%= __('Login') %>
+                                </a>
                             </div>
                         </div>
                     </form>

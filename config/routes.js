@@ -24,33 +24,24 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'users/login'
-  },
+  '/': 'Tutorship.index',
 
-  '/users/login': {
-    view: 'users/login'
-  },
+  //
+  // ──────────────────────────────────────────────── I ──────────
+  //   :::::: A U T H : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────
+  //
 
-  '/users/sign_up': {
-    view: 'users/sign_up'
-  },
+  'GET /users/sign_up': 'Auth.signupForm',
+  'POST /users/sign_up':'Auth.signup',
+  
+  'GET /users/login': 'Auth.loginForm',
+  'POST /users/login': 'Auth.login',
 
-  '/users/update': {
-    view: 'users/update'
-  },
+  'DELETE /users': 'Auth.logout',
+  
 
-  '/users/calendar': {
-    view: 'users/calendar'
-  },
-
-  '/subjects': {
-    view: 'subjects/index'
-  },
-
-  '/tutorships': {
-    view: 'tutorships/index'
-  },
+  
 
   /***************************************************************************
   *                                                                          *

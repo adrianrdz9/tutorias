@@ -30,8 +30,9 @@ module.exports = {
       model: 'subject'
     },
 
-    user: {
-      model: 'user'
+    users: {
+      collection: 'user',
+      via: 'tutorships'
     },
 
     horaries: {

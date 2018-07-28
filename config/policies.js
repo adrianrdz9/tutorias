@@ -7,7 +7,7 @@
  * For more information on configuring policies, check out:
  * https://sailsjs.com/docs/concepts/policies
  */
-
+const decorators = ['flashMessages', 'parseCustomLocals', 'getUser'];
 module.exports.policies = {
 
   /***************************************************************************
@@ -17,6 +17,8 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
-
+  '*': [...decorators, 'auth'],
+  AuthController: {
+    '*': [...decorators]
+  }
 };
