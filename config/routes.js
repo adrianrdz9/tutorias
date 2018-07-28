@@ -24,40 +24,24 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'auth/login'
-  },
+  '/': 'Tutorship.index',
 
-  'GET /users/login': {
-    view: 'auth/login'
-  },
+  //
+  // ──────────────────────────────────────────────── I ──────────
+  //   :::::: A U T H : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────
+  //
 
-  'POST /users/login': {
-    controller: 'Auth',
-    action: 'login'
-  },
+  'GET /users/sign_up': 'Auth.signupForm',
+  'POST /users/sign_up':'Auth.signup',
+  
+  'GET /users/login': 'Auth.loginForm',
+  'POST /users/login': 'Auth.login',
 
-  'DELETE /logout': {
-    controller: 'Auth',
-    action: 'logout'
-  },
+  'DELETE /users': 'Auth.logout',
+  
 
-  'GET /users/sign_up': {
-    view: 'auth/sign_up'
-  },
-
-  'POST /users/sign_up': {
-    controller: 'Auth',
-    action: 'signup'
-  },
-
-  'GET /users/update': {
-    view: 'auth/update'
-  },
-
-  'GET /my_account/calendar': {
-    view: 'pages/calendar'
-  },
+  
 
   'GET /subjects': {
     view: 'subjects/index'

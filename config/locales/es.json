@@ -16,6 +16,8 @@
 	"Calendar": "Calendario",
 	"Update my account": "Actualizar mi cuenta",
 	"Log out": "Cerrar sesión",
-	"Name": "Name",
-	"Last name": "Last name"
+	"Name": "Nombre",
+	"Error": "Error",
+	"Success": "Éxito",
+	"Warning": "Advertencia"
 }

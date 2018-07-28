@@ -1,11 +1,9 @@
 /**
- * User.js
+ * Horary.js
  *
  * @description :: A model definition.  Represents a database table/collection/etc.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
-
-const bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -14,27 +12,8 @@ module.exports = {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-    account_number: {
-      type: 'number',
-      required: true,
-      unique: true,
-      min: 312000000,
-      max: 319999999
-    },
-
-    name: {
-      type: 'string',
-      required: true,
-    },
-
-    password: {
-      type: 'string',
-      required: true
-    },
-
-    is_tutor: {
-      type: 'boolean',
-      defaultsTo: false
+    time: {
+      type: 'number'
     },
 
 
@@ -46,25 +25,11 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    tutorships: {
-      collection: 'tutorship',
-      via: 'users'
+    tutorship: {
+      model: 'tutorship'
     }
 
   },
-
-  beforeCreate: function(user, done){
-    bcrypt.genSalt(10, function(err, salt){
-      bcrypt.hash(user.password, salt, function(err, hash){
-        if(err){
-          sails.log(err);
-          return done(err);
-        }
-        user.password = hash;
-        return done();
-      })
-    })
-  }
 
 };
 
