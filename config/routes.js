@@ -41,14 +41,6 @@ module.exports.routes = {
   'DELETE /users': 'Auth.logout',
   
 
-  
-
-  'GET /subjects': {
-    view: 'subjects/index'
-  },
-
-  'GET /tutorships': 'TutorshipController.index'
-
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
