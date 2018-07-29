@@ -27,8 +27,19 @@ module.exports.bootstrap = async function(done) {
   // ]);
   // ```
 
+  
+
+  User.findOne({account_number: 312000000}, async function(err, user){
+    if(user === undefined){
+      await User.create({
+        account_number: 312000000,
+        name: 'Administrador',
+        password: 'admin'
+      });
+    }
+    return done();
+  });
   // Don't forget to trigger `done()` when this bootstrap function's logic is finished.
   // (otherwise your server will never lift, since it's waiting on the bootstrap)
-  return done();
 
 };

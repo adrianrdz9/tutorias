@@ -31,7 +31,7 @@ module.exports = {
 
         //Save created user to session
         req.session.userId = user.id;
-        return res.redirect('/')
+        return res.redirectF(req.session.redirectAfterAuthPath || '/', {success: ['Sesion iniciada']})
       }catch(err){
 
         if(err.code === 'E_UNIQUE')
@@ -73,7 +73,8 @@ module.exports = {
 
         //Save user in the session
         req.session.userId = user.id;
-        return res.redirectF('/', {success: ['Sesion iniciada']});
+
+        return res.redirectF(req.session.redirectAfterAuthPath || '/', {success: ['Sesion iniciada']});
       })
     } catch(err){
       sails.log(err);

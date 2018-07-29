@@ -5,7 +5,7 @@ module.exports = function(req, res, next){
     //Defines a new redirect method (with flash message)
     res.redirectF = function(path, flash){
         req.session.messages = {error: [], warning: [], success: []};
-
+        sails.log(req.session);
         if(flash){
             for(key in flash){
                 req.session.messages[key].push(flash[key]);

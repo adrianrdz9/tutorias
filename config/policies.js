@@ -20,5 +20,14 @@ module.exports.policies = {
   '*': [...decorators, 'auth'],
   AuthController: {
     '*': [...decorators]
+  }, 
+  TutorshipController: {
+    'index': [...decorators],
+    'show': [...decorators]
+  },
+
+  SubjectController: {
+    'index': [...decorators],
+    'show': [...decorators]
   }
 };

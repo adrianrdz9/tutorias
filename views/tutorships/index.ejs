@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row">
+        <% for(tutorship of tutorships){ %>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 p-2">
+                <div class="card" style="cursor: pointer;" onclick="window.location.replace('tutorships/<%= tutorship.id %>')">
+                    <div class="card-header text-right py-0 text-light <%= tutorship.is_available ? 'bg-success' : 'bg-danger' %>">
+                        <small>
+                            <%= tutorship.is_available ? 'Disponible' : 'No Disponible' %>
+                        </small>
+                    </div>
+                    <div class="card-body">
+                        <h2><%= tutorship.subject.title %></h2>
+                        <small class="text-muted">
+                            <span>Ofrecido por: </span>
+                            <strong><i><%= tutorship.owner.name %></i></strong>
+                        </small>
+                    </div>
+                    <div class="card-footer">
+                        Lugares disponibles: 
+                        <!-- Falta -->
+                        <%= tutorship.available %>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

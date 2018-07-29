@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-light">
+            <h3>Crear nueva tutoria</h3>
+        </div>
+        <div class="card-body">
+            <form action="/tutorships" method="post">
+                <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                <div class="form-group row">
+                    <label for="title" class="col-md-4 text-right"><%= __('Subject') %></label>
+                    <select name="subject" id="subject" class="form-control col-6">
+                        <% for(subject of subjects){ %>
+                            <option value="<%= subject.id %>"><%= subject.title %></option>
+                        <% } %>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label for="max" class="col-md-4 text-right"><%= __('Maximum') %></label>
+                    <input type="number" name="max" id="max" min='1' value="1" class="form-control col-md-6">
+                </div>
+
+                <div class="form-group text-center">
+                    <input type="submit" value="Guardar" class="btn btn-success">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -40,6 +40,31 @@ module.exports.routes = {
 
   'DELETE /users': 'Auth.logout',
   
+  //
+  // ──────────────────────────────────────────────────────── I ──────────
+  //   :::::: S U B J E C T S : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────────
+  //
+
+  'GET /subjects':'Subject.index',
+
+  'GET /subjects/new':'Subject.create',
+  'POST /subjects':'Subject.store',
+
+  'GET /subjects/:id': 'Subject.show',
+
+  //
+  // ──────────────────────────────────────────────────────────── I ──────────
+  //   :::::: T U T O R S H I P S : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────────────
+  //
+
+  'GET /tutorships': 'Tutorship.index',
+
+  'GET /tutorships/new': 'Tutorship.create',
+  'POST /tutorships': 'Tutorship.store',
+
+  'GET /tutorships/:id': 'Tutorship.show'
 
   /***************************************************************************
   *                                                                          *

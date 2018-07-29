@@ -49,6 +49,11 @@ module.exports = {
     tutorships: {
       collection: 'tutorship',
       via: 'users'
+    },
+
+    tutorOr: {
+      collection: 'tutorship',
+      via: 'owner'
     }
 
   },
@@ -64,6 +69,15 @@ module.exports = {
         return done();
       })
     })
+  },
+
+  is_admin: async function(opts){
+    const user = await User.findOne({id: opts.id});
+    if(user){
+      return user.account_number === 312000000;
+    }
+
+    return false;
   }
 
 };

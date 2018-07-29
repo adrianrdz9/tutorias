@@ -19,5 +19,10 @@
 	"Name": "Nombre",
 	"Error": "Error",
 	"Success": "Éxito",
-	"Warning": "Advertencia"
+	"Warning": "Advertencia",
+	"Subject": "Materia",
+	"Add new subject": "Agregar materia",
+	"Maximum": "Maximo",
+	"Request tutorship": "Solicitar tutoria",
+	"to request tutorship": "para solicitar tutoria"
 }

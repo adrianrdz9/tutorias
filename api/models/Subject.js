@@ -14,7 +14,8 @@ module.exports = {
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
     title: {
       type: 'string',
-      required: true
+      required: true,
+      unique: true
     },
 
 
@@ -32,6 +33,12 @@ module.exports = {
     }
 
   },
+
+  beforeCreate: function(subject, done){
+    title = subject.title;
+    subject.title = title.charAt(0).toUpperCase() + title.toLowerCase().slice(1);
+    done();
+  }
 
 };
 

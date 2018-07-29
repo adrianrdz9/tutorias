@@ -12,11 +12,10 @@ module.exports = {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-    available: {
-      type: 'boolean',
-      defaultsTo: false
+    max: {
+      type: 'number',
+      defaultsTo: 1
     },
-
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
@@ -27,7 +26,13 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
     subject: {
-      model: 'subject'
+      model: 'subject',
+      required: true
+    },
+
+    owner: {
+      model: 'user',
+      required: true
     },
 
     users: {
@@ -41,6 +46,11 @@ module.exports = {
     }
 
   },
+
+  is_available: async function(opts){
+    let tutorship = await Tutorship.find({id: opts.id}).limit(1).populate('users');
+    return (tutorship.max - tutorship.users.length ) > 0;
+  }
 
 };
 

@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header text-right text-light <%= tutorship.is_available ? 'bg-success' : 'bg-danger' %>">
+            <span>
+                <%= tutorship.is_available ? 'Disponible' : 'No Disponible' %>
+            </span>
+        </div>
+        <div class="card-body">
+            <h2><%= tutorship.subject.title %></h2>
+            <small class="text-muted">
+                <span>Ofrecido por: </span>
+                <strong><i><%= tutorship.owner.name %></i></strong>
+            </small>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-4">
+                    Lugares disponibles: 
+                    <%= tutorship.available %>
+                </div>
+                <div class="col-8 text-right">
+                    <% if(user !== null){ %>
+                        <button type="button" class="btn btn-info"><%= __('Request tutorship') %></button>
+                    <% }else{ %>
+                        <div>
+                            <button type="button" class="btn btn-info" disabled><%= __('Request tutorship') %></button>
+                            <br>
+                            <small>
+                                <a href="/users/login"><%= __('Login') %></a>
+                                <%= __('to request tutorship') %>
+                            </small>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
