@@ -51,10 +51,21 @@ module.exports = {
       via: 'users'
     },
 
-    tutorOr: {
+    tutorOf: {
       collection: 'tutorship',
       via: 'owner'
+    },
+
+    tutorshipRequests: {
+      collection: 'TutorshipRequest',
+      via: 'requestor'
+    },
+    
+    notifications: {
+      collection: 'notification',
+      via: 'user'
     }
+
 
   },
 

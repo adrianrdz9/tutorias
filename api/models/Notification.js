@@ -1,5 +1,5 @@
 /**
- * Tutorship.js
+ * Notification.js
  *
  * @description :: A model definition.  Represents a database table/collection/etc.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -12,10 +12,11 @@ module.exports = {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-    max: {
-      type: 'number',
-      defaultsTo: 1
+    title: {
+      type: 'string',
+      required: true
     },
+
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
@@ -25,41 +26,11 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    subject: {
-      model: 'subject',
-      required: true
-    },
-
-    owner: {
-      model: 'user',
-      required: true
-    },
-
-    users: {
-      collection: 'user',
-      via: 'tutorships'
-    },
-
-    horaries: {
-      collection: 'horary',
-      via: 'tutorship'
-    },
-
-    requests: {
-      collection: 'TutorshipRequest',
-      via: 'tutorshipRequested'
+    user: {
+      model: 'user'
     }
 
   },
-
-  is_available: async function(opts){
-    let tutorship = await Tutorship.find({id: opts.id}).limit(1).populate('users');
-    tutorship = tutorship[0];
-    if(tutorship.users === undefined){
-      tutorship.users = [];
-    }
-    return (tutorship.max - tutorship.users.length ) > 0;
-  }
 
 };
 

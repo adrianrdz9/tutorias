@@ -64,7 +64,20 @@ module.exports.routes = {
   'GET /tutorships/new': 'Tutorship.create',
   'POST /tutorships': 'Tutorship.store',
 
-  'GET /tutorships/:id': 'Tutorship.show'
+  'GET /tutorships/manage': 'Tutorship.manage',
+  'POST /tutorships/request/:id': 'Tutorship.respondRequest',
+
+  'GET /tutorships/:id': 'Tutorship.show',
+
+  'POST /tutorships/:id/request': 'Tutorship.request',
+
+  //
+  // ────────────────────────────────────────────────────────────────── I ──────────
+  //   :::::: N O T I F I C A T I O N S : :  :   :    :     :        :          :
+  // ────────────────────────────────────────────────────────────────────────────
+  //
+
+  'GET /notifications': 'Notification.index',
 
   /***************************************************************************
   *                                                                          *

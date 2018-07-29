@@ -23,7 +23,6 @@ module.exports.policies = {
   }, 
   TutorshipController: {
     'index': [...decorators],
-    'show': [...decorators]
   },
 
   SubjectController: {

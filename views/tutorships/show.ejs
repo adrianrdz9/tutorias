@@ -20,7 +20,14 @@
                 </div>
                 <div class="col-8 text-right">
                     <% if(user !== null){ %>
-                        <button type="button" class="btn btn-info"><%= __('Request tutorship') %></button>
+                        <% if(requestStatus !== null){ %>
+                            <!-- Request status -> Request sent -->
+                            <% if(requestStatus === 0){ %>
+                                <button type="button" class="btn btn-info" disabled> <%= __('Request pending') %></button>
+                            <% } %>
+                        <% } else{ %>
+                            <button type="button" class="btn btn-info" id="requestTutorship" data-tutorship-id="<%= tutorship.id %>"> <%= __('Request tutorship') %></button>
+                        <% } %>
                     <% }else{ %>
                         <div>
                             <button type="button" class="btn btn-info" disabled><%= __('Request tutorship') %></button>
