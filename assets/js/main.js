@@ -77,4 +77,8 @@ $(document).ready(()=>{
 })
 
 
+var calendar = new Calendar();
+var currentDate = moment(calendar.currentDate).format("YYYY-MM-DD");
+
+
 

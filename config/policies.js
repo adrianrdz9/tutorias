@@ -19,7 +19,10 @@ module.exports.policies = {
 
   '*': [...decorators, 'auth'],
   AuthController: {
-    '*': [...decorators]
+    '*': [...decorators],
+    'calendar': [...decorators, 'auth'],
+    'events': [...decorators, 'auth'],
+    'update': [...decorators, 'auth'],
   }, 
   TutorshipController: {
     'index': [...decorators],

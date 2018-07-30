@@ -39,6 +39,8 @@ module.exports.routes = {
   'POST /users/login': 'Auth.login',
 
   'DELETE /users': 'Auth.logout',
+
+  'POST /users/update': 'Auth.update',
   
   //
   // ──────────────────────────────────────────────────────── I ──────────
@@ -78,6 +80,16 @@ module.exports.routes = {
   //
 
   'GET /notifications': 'Notification.index',
+
+
+  //
+  // ──────────────────────────────────────────────────────── I ──────────
+  //   :::::: C A L E N D A R : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────────
+  //
+
+  'GET /users/calendar': 'Auth.calendar',
+  'GET /events': 'Auth.events'
 
   /***************************************************************************
   *                                                                          *

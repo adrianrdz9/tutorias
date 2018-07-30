@@ -67,6 +67,15 @@
                             <a class="dropdown-item" href="/users/calendar"><%= __('Calendar') %></a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/users/update"><%= __('Update my account') %></a>
+                            <% if(!user.is_tutor){ %>
+                                <a href="#" class="dropdown-item" onclick="$('#tutorForm').submit()"><%= __('Become tutor') %></a>
+
+                                <form action="/users/update" method="post" id="tutorForm" class="d-none">
+                                    <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                                    <input type="checkbox" name="is_tutor" checked>
+                                </form>
+                            <% } %>
+
                             <a class="dropdown-item" id="logout"><%= __('Log out') %></a>
                         </div>
                     <% } %>

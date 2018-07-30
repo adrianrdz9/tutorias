@@ -23,6 +23,7 @@ module.exports = {
       tutorship.owner = _.pick(tutorship.owner, ['name']);
 
       tutorship.is_available = await Tutorship.has_any_available(tutorship);
+      
       tutorship.available = await Tutorship.available_horaries(tutorship);
       tutorship.available = tutorship.available.length;
 

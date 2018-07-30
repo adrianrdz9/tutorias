@@ -6,6 +6,7 @@
  */
 
  const bcrypt = require('bcrypt');
+ const moment = require("moment");
 
 module.exports = {
   signup: async function(req, res){
@@ -87,9 +88,53 @@ module.exports = {
     return res.view('users/login')
   },
 
+  update: async function(req, res){
+    var newData = {};
+    if(req.body.name){
+      newData.name = req.body.name;
+    }
+
+    if(req.body.is_tutor){
+      newData.is_tutor = req.body.is_tutor === "on" ? true : false;
+    }
+    await User.update({id: req.session.userId}, newData)
+    return res.redirectF('/', {success: ["Ya eres tutor"]});
+  },
+
   logout: function(req, res){
       req.session.userId = undefined;
       res.ok();
+  },
+
+  calendar: function(req, res){
+    return res.view('users/calendar');
+  },
+
+  events: async function(req, res){
+    const date = req.query.date.split('-');
+    var events = await User.find({id: req.session.userId}).limit(1).populate("classes");
+    events = events[0].classes;
+
+    events = events.filter((el)=>{
+      el = el.date.split('-');
+      return el[0] === date[0] && el[1] === date[1]
+    })
+
+    for(i in events){
+      var subject = await Tutorship.find({
+        id: events[i].tutorship
+      }).limit(1).populate("subject").populate("owner");
+      var tutor = subject[0].owner.name;
+      subject = subject[0].subject.title;
+
+      time = events[i].time;
+
+
+      events[i].title = subject;
+      events[i].description = `Tutor: ${tutor}<br>Hora: ${time}`
+    }
+
+    res.json(events)
   }
 
 };

@@ -43,13 +43,12 @@ module.exports = {
   
     let tutorship = await Tutorship.find({id: opts.id}).limit(1).populate('horaries');
     tutorship = tutorship[0];
-    let available = false
     for (horary of tutorship.horaries) {
-      if(Horary.is_available(horary)){
-        available = true;
+      if(await Horary.is_available(horary)){
+        return true;
       }
     }
-    return available;
+    return false;
   },
 
   available_horaries: async function(opts){
@@ -59,7 +58,7 @@ module.exports = {
     tutorship = tutorship[0];
 
     for (horary of tutorship.horaries) {
-      if(Horary.is_available(horary)){
+      if(await Horary.is_available(horary)){
         availables.push(horary);
       }
     }

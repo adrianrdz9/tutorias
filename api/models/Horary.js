@@ -55,7 +55,7 @@ module.exports = {
   is_available: async function(opts){
     let horary = await Horary.find({id: opts.id}).limit(1).populate('users');
     horary = horary[0];
-    return (horary.max - horary.users.length) > 0
+    return (horary.max - horary.users.length) !== 0
   },
 
   available: async function(opts){
