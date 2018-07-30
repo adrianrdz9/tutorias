@@ -30,9 +30,11 @@ module.exports = {
       model: 'user'
     },
 
-    tutorshipRequested: {
-      model: 'tutorship'
-    }
+    horary: {
+      model: 'horary'
+    },
+
+    
 
   },
 

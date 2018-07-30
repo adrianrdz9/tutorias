@@ -12,10 +12,6 @@ module.exports = {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-    max: {
-      type: 'number',
-      defaultsTo: 1
-    },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
@@ -35,31 +31,44 @@ module.exports = {
       required: true
     },
 
-    users: {
-      collection: 'user',
-      via: 'tutorships'
-    },
-
     horaries: {
       collection: 'horary',
       via: 'tutorship'
     },
 
-    requests: {
-      collection: 'TutorshipRequest',
-      via: 'tutorshipRequested'
-    }
 
   },
 
-  is_available: async function(opts){
-    let tutorship = await Tutorship.find({id: opts.id}).limit(1).populate('users');
+  has_any_available: async function(opts){
+  
+    let tutorship = await Tutorship.find({id: opts.id}).limit(1).populate('horaries');
     tutorship = tutorship[0];
-    if(tutorship.users === undefined){
-      tutorship.users = [];
+    let available = false
+    for (horary of tutorship.horaries) {
+      if(Horary.is_available(horary)){
+        available = true;
+      }
     }
-    return (tutorship.max - tutorship.users.length ) > 0;
+    return available;
+  },
+
+  available_horaries: async function(opts){
+    let availables = [];
+
+    let tutorship = await Tutorship.find({id: opts.id}).limit(1).populate('horaries');
+    tutorship = tutorship[0];
+
+    for (horary of tutorship.horaries) {
+      if(Horary.is_available(horary)){
+        availables.push(horary);
+      }
+    }
+
+    return availables;
+
   }
+
+
 
 };
 

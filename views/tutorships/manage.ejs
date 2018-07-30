@@ -4,7 +4,7 @@
     <h2>Mis tutorias</h2>
     <div class="row">
         <% for(tutorship of tutorships){ %>
-            <div class="col-sm-12 col-md-6 col-lg-4 p-2">
+            <div class="col-sm-12 p-2">
                 <div class="card" style="cursor: pointer;">
                     <div class="card-header text-right py-0 text-light <%= tutorship.is_available ? 'bg-success' : 'bg-danger' %>">
                         <small>
@@ -13,73 +13,69 @@
                     </div>
                     <div class="card-body">
                         <h2><%= tutorship.subject.title %></h2>
-                        <ul>
-                            <% for(student of tutorship.users){ %>
-                                <li><%= student.name %></li>
+
+                        <div class="accordion" id="accordion-<%= tutorship.id %>">
+                            <% for(horary of tutorship.horaries){ %>
+                                <div class="card">
+                                    <button class="py-2 btn <%= tutorship.is_available ? 'btn-success' : 'btn-danger' %>" id="header-<%= horary.id %>"  
+                                        type="button" data-toggle="collapse" data-target="#collapse-<%= horary.id %>" aria-expanded="false" 
+                                        aria-controls="#collapse-<%= horary.id %>">
+
+                                        <h5 class="mb-0">
+                                            <%= moment(horary.date+" "+horary.time).format("DD [de] MMMM [de] YYYY, hh:mm a") %>
+                                            - max. <%= horary.max %>
+                                            ( <%= horary.available %> <%= horary === 1 ? "lugar disponible" : "lugares disponibles" %>)
+                                        </h5>
+                                    </button>
+
+                                    <div class="collapse" id="collapse-<%= horary.id %>" aria-labelledby="header-<%= horary.id %>" data-parent="#accordion-<%= tutorship.id %>">
+                                        <div class="card-body">
+                                            <div class="list-group">
+                                                <% for(request of horary.requests){ %>
+                                                    <% if(request.status === 0){ %>
+                                                        <div class="list-group-item mb-2 bg-warning">
+                                                            <%= request.requestor.name %>
+                                                            <small class="float-right text-light">Pendiente</small>
+                                                            <div class="d-block text-right mt-2">
+                                                                <button class="btn btn-success w-25 accept-tutorship-request"
+                                                                    data-request-id="<%= request.id %>">
+                                                                Aceptar</button>
+                                                                <button class="btn btn-danger w-25 reject-tutorship-request"
+                                                                data-request-id="<%= request.id %>">
+                                                                Rechazar</button>
+                                                            </div>
+                                                        </div>
+                                                    <% } else if(request.status === 1){ %>
+                                                        <div class="list-group-item mb-2 bg-success">
+                                                            <%= request.requestor.name %>
+                                                            <small class="float-right text-light">Aceptado</small>
+                                                        </div>
+                                                    <% } else if(request.status === 2){ %>
+                                                        <div class="list-group-item mb-2 bg-danger text-light">
+                                                            <%= request.requestor.name %>
+                                                            <small class="float-right">Rechazado</small>
+                                                        </div>
+                                                    <% } %>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             <% } %>
-                        </ul>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-6">
-                                Lugares disponibles: 
+                                Horarios con cupo disponible: 
                                 <%= tutorship.available %>
                             </div>
-        
-                            <div class="col-6 text-right">
-                                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#requests-<%= tutorship.id %>" 
-                                    aria-expanded="false" aria-controls="requests-<%= tutorship.id %>">
-                                    Ver solicitudes
-                                </button>
-                            </div>
+    
                         </div>
                     </div>
                 </div>
             </div>
         <% } %>
-    </div>
-    <h2 class="mt-4">Solicitudes</h2>
-    <% for(tutorship of tutorships){ %>
-        <div class="collapse" id="requests-<%= tutorship.id %>">
-            <div class="card">
-                <div class="card-header bg-info text-light">
-                    <div class="row">
-                        <div class="col-6">
-                            Solicitudes
-                        </div>
-                        <div class="text-right col-6">
-                            <strong><%= tutorship.subject.title %></strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-                        <% for(request of tutorship.requests){ %>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="card">
-                                    <div class="card-header bg-secondary text-light">
-                                        <%= request.requestor.name %>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-6">
-                                                <button class="btn btn-success w-100 accept-tutorship-request" data-request-id="<%= request.id %>">Aceptar</button>
-                                            </div>
-                                            <div class="col-md-12 col-lg-6">
-                                                <button class="btn btn-danger w-100 reject-tutorship-request" data-request-id="<%= request.id %>">Rechazar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <% } %>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <% } %>
-
-    <div style="min-height: 30vh;"></div>        
+    </div>       
 </div>

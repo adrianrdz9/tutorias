@@ -10,9 +10,9 @@ $("#logout").click((ev)=>{
     })
 });
 
-$("#requestTutorship").click((ev)=>{
+$(".requestTutorship").click((ev)=>{
     var $triggerBtn = $(ev.target);
-    var id = $triggerBtn.data("tutorship-id");
+    var id = $triggerBtn.data("horary-id");
     $triggerBtn.attr("disabled", true);
     $.ajax({
         url: "/tutorships/"+id+"/request",
@@ -33,7 +33,27 @@ $(".accept-tutorship-request").click((ev)=>{
         method: 'POST',
         data:{ _csrf: window.SAILS_LOCALS._csrf, action: 'accept' },
         success: function(res){
-            alert(res)
+            if(res.err){
+                alert(res.err)
+            }
+            window.location.reload();
+        }
+    }) 
+})
+
+$(".reject-tutorship-request").click((ev)=>{
+    var $triggerBtn = $(ev.target);
+    var id = $triggerBtn.data("request-id");
+    $triggerBtn.attr("disabled", true);
+    $.ajax({
+        url: "/tutorships/request/"+id,
+        method: 'POST',
+        data:{ _csrf: window.SAILS_LOCALS._csrf, action: 'reject' },
+        success: function(res){
+            if(res.err){
+                alert(res.err)
+            }
+            window.location.reload();
         }
     }) 
 })
@@ -55,3 +75,6 @@ $(document).ready(()=>{
         })
     }
 })
+
+
+

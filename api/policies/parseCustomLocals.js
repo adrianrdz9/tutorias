@@ -9,6 +9,10 @@ module.exports = function(req, res, next){
     }
     //Remove custom locals from the session
     req.session.custom = undefined;
+    const moment = require("moment");
+    moment.locale("es");
+    res.locals.moment = moment
+
 
     next();
 }

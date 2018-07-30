@@ -46,8 +46,8 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    tutorships: {
-      collection: 'tutorship',
+    classes: {
+      collection: 'horary',
       via: 'users'
     },
 
@@ -64,7 +64,7 @@ module.exports = {
     notifications: {
       collection: 'notification',
       via: 'user'
-    }
+    },
 
 
   },

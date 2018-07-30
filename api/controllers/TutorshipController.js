@@ -13,28 +13,22 @@ module.exports = {
     var tutorships = await Tutorship.find()
         .populate('subject')
         .populate('owner')
-        .populate('users')
+        .populate('horaries')
     
-    //Remove sensitive data before sending it to the view
+    //
+    // ─── REMOVE SENSITIVE DATA BEFORE SENDING IT TO THE VIEW ─────────
+    //  
     for (let i = 0; i < tutorships.length; i++) {
       var tutorship = tutorships[i];
       tutorship.owner = _.pick(tutorship.owner, ['name']);
-      tutorship.is_available = await Tutorship.is_available(tutorship);
-      tutorship.available = tutorship.max - tutorship.users.length;
+
+      tutorship.is_available = await Tutorship.has_any_available(tutorship);
+      tutorship.available = await Tutorship.available_horaries(tutorship);
+      tutorship.available = tutorship.available.length;
+
       tutorships[i] = tutorship;
     }
-
-    for (let i in tutorships) {
-      var tutorship = tutorships[i];
-      var users = tutorship.users;
-      for(let j in users){
-        user = users[j];
-        user = _.pick(user, ['name']);
-        users[j] = user;
-      }
-
-      tutorships[i].users = users;
-    }
+    // ─────────────────────────────────────────────────────────────────
 
     return res.view('tutorships/index', {
       tutorships
@@ -42,6 +36,7 @@ module.exports = {
   },
 
   create: async function(req, res){
+    // Validate that user is a tutor
     if(req.session.user.is_tutor === true){
       return res.view('tutorships/new', {subjects: await Subject.find()});
     }else{
@@ -53,11 +48,22 @@ module.exports = {
     //Only the tutors can create new tutorships
     if(req.session.user.is_tutor === true){
       try {
-        await Tutorship.create({
+        var newTutorship = await Tutorship.create({
           subject: req.body.subject,
-          max: req.body.max,
           owner: req.session.userId
+        }).fetch();
+        // Assign one or more horaries to the tutorship
+        req.body.horary.forEach(async (hor) => {
+          let horary = await Horary.create({
+            max: hor.max,
+            date: hor.date,
+            time: hor.time
+          }).fetch();
+
+          await Tutorship.addToCollection(newTutorship.id, 'horaries', [horary.id]);
         });
+
+
         return res.redirectF('/tutorships', {success: ["Tutoria creada"]})
       } catch (error) {
         sails.log(error);
@@ -72,13 +78,33 @@ module.exports = {
     var tutorship = await Tutorship.find({id: req.params.id}).limit(1)
         .populate('subject')
         .populate('owner')
-        .populate('users')
+        .populate('horaries')
     tutorship = tutorship[0];
-    //Remove sensitive data before sending it to the view
+
+    //
+    // ─── DISPLAY HOW MANY PLACES ARE LEFT FOR EACH HORARY ────────────
+    //
+    for(i in tutorship.horaries){
+      tutorship.horaries[i].available = await Horary.available(tutorship.horaries[i]);
+      tutorship.horaries[i].status = await TutorshipRequest.findOne({
+        requestor: req.session.userId,
+        horary: tutorship.horaries[i].id
+      })
+      if(tutorship.horaries[i].status){
+        tutorship.horaries[i].status = tutorship.horaries[i].status.status;
+      }else{
+        tutorship.horaries[i].status = null;
+      }
+    }
+
+    //
+    // ─── REMOVE SENSITIVE DATA BEFORE SENDING IT TO THE VIEW ─────────
+    //  
     tutorship.owner = _.pick(tutorship.owner, ['name']);
 
-    tutorship.is_available = await Tutorship.is_available(tutorship);  
-    tutorship.available = tutorship.max - tutorship.users.length;
+    tutorship.is_available = await Tutorship.has_any_available(tutorship);  
+    tutorship.available = await Tutorship.available_horaries(tutorship);
+    tutorship.available = tutorship.available.length;
 
 
     var users = tutorship.users;
@@ -87,56 +113,47 @@ module.exports = {
       user = _.pick(user, ['name']);
       users[j] = user;
     }
-    const tutorshipRequested = await TutorshipRequest.findOne({
-      requestor: req.session.userId,
-      tutorshipRequested: tutorship.id
-    });
-
-    var requestStatus = null;
-    if(tutorshipRequested){
-      requestStatus = tutorshipRequested.status
-    }
+    // ─────────────────────────────────────────────────────────────────
 
     return res.view('tutorships/show', {
       tutorship,
-      requestStatus: requestStatus
     });
   },
 
   request: async function(req, res){
     try{
-      const tutorshipRequested = await Tutorship.findOne({id: req.params.id});
-      if(!tutorshipRequested) {
-        res.staus(400);
-        res.json({error: "No existe esa tutoría"});
+      //
+      // ─── VALIDATE ────────────────────────────────────────────────────
+      //
+      const horaryRequested = await Horary.findOne({id: req.params.id});
+      if(!horaryRequested) {
+        res.status(400);
+        res.json({error: "No existe ese horario"});
       }
 
       if(await TutorshipRequest.findOne({
         requestor: req.session.userId,
-        tutorshipRequested: tutorshipRequested.id
+        horary: horaryRequested.id
       })){
-        res.staus(429);
+        res.status(429);
         res.json({error: "Ya solicitaste esta tutoría"})
       }
+      // ─────────────────────────────────────────────────────────────────
 
-
-
-      if(await Tutorship.is_available(tutorshipRequested)){
+      if(await Horary.is_available(horaryRequested)){
         await TutorshipRequest.create({
           requestor: req.session.userId,
-          tutorshipRequested: tutorshipRequested.id
+          horary: horaryRequested.id
         });
         res.ok();
       }else{
-        res.staus(400);
+        res.status(400);
         res.json({error: "Ya no hay cupo para esta tutoria"});
       }
     }catch(err){
-      res.staus(400);
+      res.status(500);
       res.json(err);
     }
-
-    
   },
 
   manage: async function(req, res){
@@ -146,68 +163,58 @@ module.exports = {
 
     var tutorships = await Tutorship.find({owner: req.session.userId})
         .populate('subject')
-        .populate('users')
     
-    //Remove sensitive data before sending it to the view
     for (let i = 0; i < tutorships.length; i++) {
       var tutorship = tutorships[i];
 
-      tutorship.is_available = await Tutorship.is_available(tutorship);
+      tutorship.is_available = await Tutorship.has_any_available(tutorship);
 
-      tutorship.available = tutorship.max - tutorship.users.length;
+      tutorship.available = await Tutorship.available_horaries(tutorship);
+      tutorship.available = tutorship.available.length
 
-      tutorship.requests = await TutorshipRequest.find({
-        tutorshipRequested: tutorship.id,
-        status: 0
-      }).populate('requestor');
+      tutorship.horaries = await Horary.find({tutorship: tutorship.id}).populate("users");
 
-      for (j in tutorship.requests) {
-        tutorship.requests[j].requestor = _.pick(tutorship.requests[j].requestor, ['name'])
+      for (j in tutorship.horaries) {
+        tutorship.horaries[j].requests = await TutorshipRequest.find({
+          horary: tutorship.horaries[j].id
+        }).populate("requestor"); 
+        tutorship.horaries[j].available = await Horary.available(tutorship.horaries[j]);
       }
 
       tutorships[i] = tutorship;
     }
-
-    for (let i in tutorships) {
-      var tutorship = tutorships[i];
-      var users = tutorship.users;
-      for(let j in users){
-        user = users[j];
-        user = _.pick(user, ['name']);
-        users[j] = user;
-      }
-
-      tutorships[i].users = users;
-    }
-
     return res.view('tutorships/manage', {
       tutorships
     });
   },
 
   respondRequest: async function(req, res){
-    var request = await TutorshipRequest.find({id: req.params.id}).limit(1).populate('tutorshipRequested');
+    var request = await TutorshipRequest.find({id: req.params.id}).limit(1).populate('horary');
     if(!request) {
       res.status(400);
       return res.json({error: "No existe esta solicitud"});
     }
     request = request[0];
 
-    if(await Tutorship.is_available({id: request.tutorshipRequested.id})){
-      await Tutorship.addToCollection(request.tutorshipRequested.id, 'users', request.requestor);
-      var newStatus;
+    var newStatus;
+    if(req.body.action === "reject"){
+      newStatus = 2;
+    }
+
+    if(await Horary.is_available({id: request.horary.id}) || req.body.action === "reject"){
       if(req.body.action === "accept"){
+        await Horary.addToCollection(request.horary.id, 'users', request.requestor);
         newStatus = 1;
-      }else if(req.body.action === "reject"){
-        newStatus = 2;
-      }
+      } 
 
-      await TutorshipRequest.update({id: request.tutorshipRequested.id}, {status: newStatus});
-
+      await TutorshipRequest.update({id: request.id}, {status: newStatus});
       return res.ok();
     }else{
       return res.json({error: "Ya no hay cupo"});
     }
+
+   
+
   }
 
 };

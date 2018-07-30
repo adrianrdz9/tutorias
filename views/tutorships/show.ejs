@@ -6,39 +6,54 @@
             </span>
         </div>
         <div class="card-body">
-            <h2><%= tutorship.subject.title %></h2>
-            <small class="text-muted">
-                <span>Ofrecido por: </span>
-                <strong><i><%= tutorship.owner.name %></i></strong>
-            </small>
-        </div>
-        <div class="card-footer">
-            <div class="row">
-                <div class="col-4">
-                    Lugares disponibles: 
-                    <%= tutorship.available %>
+            <div class="row justify-content-between">
+                <h1 class="d-inline-block col-auto"><%= tutorship.subject.title %></h1>
+                <div class="text-right col-auto">
+                    <small class="text-muted ">
+                        Ofrecido por:
+                        <strong><i><%= tutorship.owner.name %></i></strong>
+                    </small>
                 </div>
-                <div class="col-8 text-right">
-                    <% if(user !== null){ %>
-                        <% if(requestStatus !== null){ %>
-                            <!-- Request status -> Request sent -->
-                            <% if(requestStatus === 0){ %>
-                                <button type="button" class="btn btn-info" disabled> <%= __('Request pending') %></button>
-                            <% } %>
-                        <% } else{ %>
-                            <button type="button" class="btn btn-info" id="requestTutorship" data-tutorship-id="<%= tutorship.id %>"> <%= __('Request tutorship') %></button>
-                        <% } %>
-                    <% }else{ %>
-                        <div>
-                            <button type="button" class="btn btn-info" disabled><%= __('Request tutorship') %></button>
-                            <br>
-                            <small>
-                                <a href="/users/login"><%= __('Login') %></a>
-                                <%= __('to request tutorship') %>
-                            </small>
+            </div>
+            <hr>
+            <h2>Fechas</h2>
+
+            <div class="list-group">
+                <% for(horary of tutorship.horaries){ %>
+                    <div class="list-group-item p-4 mb-2 <%= tutorship.is_available ? 'bg-success' : 'bg-danger' %>">
+                        <div class="row">
+                            <div class="col-auto h4">
+                                <%= moment(horary.date+" "+horary.time).format("DD [de] MMMM [de] YYYY, hh:mm a") %>
+                            </div>
+                            <div class="col-auto h5">
+                                Grupo de max. 
+                                <%= horary.max %>
+                                <%= horary.max > 1 ? "personas" : "persona" %>
+                            </div>
                         </div>
-                    <% } %>
-                </div>
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                Lugares disponibles:
+                                <strong>
+                                    <%= horary.available %>
+                                </strong>
+                            </div>
+                            <div class="col-auto">
+                                <% if(horary.status === null){ %>
+                                    <button type="button" class="btn btn-primary requestTutorship" data-horary-id="<%= horary.id %>" ><%= __('Request tutorship') %></button>
+                                <% }else{ %>
+                                    <% if(horary.status === 0){ %>
+                                        <button disabled="disabled" class="btn btn-primary">Solicitud pendiente</button>
+                                    <% }else if(horary.status === 1){ %>
+                                        <button disabled="disabled" class="btn btn-success">Ya estas en este grupo</button>
+                                    <% }else if(horary.status === 2){ %>
+                                        <button disabled="disabled" class="btn btn-danger">Solicitud rechazada</button>
+                                    <%}%>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
             </div>
         </div>
     </div>

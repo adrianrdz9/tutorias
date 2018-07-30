@@ -12,7 +12,11 @@ module.exports = {
    * `SubjectController.index()`
    */
   index: async function (req, res) {
-    return res.view('subjects/index', {subjects: await Subject.find()});
+    var subjects = await Subject.find().populate("tutorships");
+    for(i in subjects){
+      subjects[i].available = subjects[i].tutorships.length
+    }
+    return res.view('subjects/index', {subjects});
   },
 
   create: async function(req, res){
@@ -42,9 +46,28 @@ module.exports = {
 
   show: async function(req, res){
     const subject = await Subject.findOne({id: req.params.id});
-    const tutorships = await Subject.find({id: req.params.id}).limit(1).populate('tutorships');
+    var tutorships = await Tutorship.find()
+        .populate('subject')
+        .populate('owner')
+        .populate('horaries')
+
+        //
+        // ─── REMOVE SENSITIVE DATA BEFORE SENDING IT TO THE VIEW ─────────
+        //  
+        for (let i = 0; i < tutorships.length; i++) {
+          var tutorship = tutorships[i];
+          tutorship.owner = _.pick(tutorship.owner, ['name']);
+    
+          tutorship.is_available = await Tutorship.has_any_available(tutorship);
+          tutorship.available = await Tutorship.available_horaries(tutorship);
+          tutorship.available = tutorship.available.length;
+    
+          tutorships[i] = tutorship;
+        }
+        // ─────────────────────────────────────────────────────────────────
+
     return res.view('subjects/show', {
-      tutorships: tutorships.tutorships || [],
+      tutorships: tutorships,
       subject: subject
     });
   }
