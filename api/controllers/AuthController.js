@@ -88,17 +88,37 @@ module.exports = {
     return res.view('users/login')
   },
 
+  updateForm: async function(req, res){
+    user = await User.find({id: req.session.userId}).limit(1);
+    user = _.pick(user[0], ["name", "account_number", "is_tutor"]);
+    return res.view('users/update', {user});
+  },
+
   update: async function(req, res){
     var newData = {};
     if(req.body.name){
       newData.name = req.body.name;
     }
 
+    if(req.body.password){
+      const match = await bcrypt.compareSync(req.body.old_password, req.session.user.password);
+      if(match){
+        if(req.body.password === req.body.password_confirmation){
+          newData.password = req.body.password;
+        }else{
+          res.redirectF("/users/update", {error: "Las contraseñas no coinciden"});
+        }
+      }else{
+        res.redirectF("/users/update", {error: "Contraseña incorrecta"})
+      }
+    }
+
     if(req.body.is_tutor){
-      newData.is_tutor = req.body.is_tutor === "on" ? true : false;
+      //Once the user becomes tutor it cant be undone
+      newData.is_tutor = true;
     }
     await User.update({id: req.session.userId}, newData)
-    return res.redirectF('/', {success: ["Ya eres tutor"]});
+    return res.redirectF('/', {success: ["Datos actualizados"]});
   },
 
   logout: function(req, res){
@@ -127,11 +147,11 @@ module.exports = {
       var tutor = subject[0].owner.name;
       subject = subject[0].subject.title;
 
-      time = events[i].time;
-
+      var time = events[i].time;
+      var place = events[i].place;
 
       events[i].title = subject;
-      events[i].description = `Tutor: ${tutor}<br>Hora: ${time}`
+      events[i].description = `Tutor: ${tutor}<br>Hora: ${time}<br>Lugar: ${place}`
     }
 
     res.json(events)

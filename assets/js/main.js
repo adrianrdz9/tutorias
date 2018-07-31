@@ -36,7 +36,6 @@ $(".accept-tutorship-request").click((ev)=>{
             if(res.err){
                 alert(res.err)
             }
-            window.location.reload();
         }
     }) 
 })
@@ -53,7 +52,6 @@ $(".reject-tutorship-request").click((ev)=>{
             if(res.err){
                 alert(res.err)
             }
-            window.location.reload();
         }
     }) 
 })
@@ -76,9 +74,10 @@ $(document).ready(()=>{
     }
 })
 
-
-var calendar = new Calendar();
-var currentDate = moment(calendar.currentDate).format("YYYY-MM-DD");
+if($('.calendar')){
+    var calendar = new Calendar();
+    var currentDate = moment(calendar.currentDate).format("YYYY-MM-DD");
+}
 
 
 

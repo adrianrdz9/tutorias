@@ -38,5 +38,18 @@ module.exports = {
 
   },
 
+  beforeCreate: async function(request, next){
+    const horary = await Horary.findOne({id: request.horary});
+    const requestor = await User.findOne({id: request.requestor});
+    const tutorship = await Tutorship.findOne({id: horary.tutorship});
+
+    const requestToId = tutorship.owner;
+    await Notification.create({
+      user: requestToId,
+      title: requestor.name + " ha solicitado unirse a una de tus tutorias"
+    })
+    next();
+  },
+
 };
 

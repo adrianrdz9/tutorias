@@ -7,7 +7,15 @@
 
 module.exports = {
     index: async function(req, res){
-        return res.json(await Notification.find());
+        return res.json(await Notification.find({user: req.session.userId}));
+    }, 
+    create: async function(req, res){
+        return res.json(
+            await Notification.create({
+                title: req.body.title,
+                user: req.body.userId
+            }).fetch()
+        )
     }
 
 };

@@ -27,6 +27,11 @@ module.exports = {
       defaultsTo: 1
     },
 
+    place: {
+      type: 'string',
+      defaultsTo: 'Biblioteca'
+    },
+
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

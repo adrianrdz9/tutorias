@@ -7,6 +7,19 @@
 
 const bcrypt = require('bcrypt');
 
+function hashPassword(password, cb){
+  bcrypt.genSalt(10, function(err, salt){
+    bcrypt.hash(password, salt, function(err, hash){
+      if(err){
+        sails.log(err);
+        return cb(err);
+      }
+      password = hash;
+      return cb(null, password);
+    })
+  })
+}
+
 module.exports = {
 
   attributes: {
@@ -70,16 +83,27 @@ module.exports = {
   },
 
   beforeCreate: function(user, done){
-    bcrypt.genSalt(10, function(err, salt){
-      bcrypt.hash(user.password, salt, function(err, hash){
+    hashPassword(user.password, function(err, hash){
+      if(err){
+        return done(err);
+      }
+      user.password = hash;
+      done();
+    })
+  }, 
+
+  beforeUpdate: function(user, done){
+    if(user.password){
+      hashPassword(user.password, function(err, hash){
         if(err){
-          sails.log(err);
           return done(err);
         }
         user.password = hash;
-        return done();
+        done();
       })
-    })
+    }else{
+      done();
+    }
   },
 
   is_admin: async function(opts){

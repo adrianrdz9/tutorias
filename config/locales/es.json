@@ -28,5 +28,11 @@
 	"Request pending": "Solicitud pendiente",
 	"Offer tutorship": "Ofrecer tutoría",
 	"Manage my tutorships": "Administrar mis tutorias",
-	"Become tutor": "Hacerme tutor"
+	"Become tutor": "Hacerme tutor",
+	"Update password": "Update password",
+	"Old password": "Old password",
+	"New password": "New password",
+	"New password confirmation": "New password confirmation",
+	"Change password": "Change password",
+	"Leave blank if don't want to change it": "Leave blank if don't want to change it"
 }

@@ -23,7 +23,7 @@ module.exports = {
       tutorship.owner = _.pick(tutorship.owner, ['name']);
 
       tutorship.is_available = await Tutorship.has_any_available(tutorship);
-      
+
       tutorship.available = await Tutorship.available_horaries(tutorship);
       tutorship.available = tutorship.available.length;
 
@@ -58,7 +58,8 @@ module.exports = {
           let horary = await Horary.create({
             max: hor.max,
             date: hor.date,
-            time: hor.time
+            time: hor.time,
+            place: hor.place
           }).fetch();
 
           await Tutorship.addToCollection(newTutorship.id, 'horaries', [horary.id]);
@@ -203,12 +204,38 @@ module.exports = {
     }
 
     if(await Horary.is_available({id: request.horary.id}) || req.body.action === "reject"){
+
+
       if(req.body.action === "accept"){
         await Horary.addToCollection(request.horary.id, 'users', request.requestor);
         newStatus = 1;
       } 
 
-      await TutorshipRequest.update({id: request.id}, {status: newStatus});
+      var requestor = await TutorshipRequest.update({id: request.id}, {status: newStatus}).fetch();
+      requestor = requestor[0];
+      sails.log(requestor);
+
+      var owner = await Horary.find({id: requestor.horary}).limit(1).populate("tutorship");
+      sails.log(owner);
+      owner = owner[0].tutorship.owner;
+      sails.log(owner);
+
+      owner = await User.find({id: owner}).limit(1);
+      owner = owner[0].name;
+      sails.log(owner);
+
+
+      requestor = requestor.requestor;
+      sails.log(requestor);
+
+      var message = "" + owner + " te ha " + (newStatus === 1 ? "aceptado" : "rechazado") + " en una de sus tutorias";
+
+      await Notification.create({
+        title: message,
+        user: requestor
+      })
+
+
       return res.ok();
     }else{
       return res.json({error: "Ya no hay cupo"});

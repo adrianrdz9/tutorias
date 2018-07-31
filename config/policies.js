@@ -23,6 +23,7 @@ module.exports.policies = {
     'calendar': [...decorators, 'auth'],
     'events': [...decorators, 'auth'],
     'update': [...decorators, 'auth'],
+    'updateForm': [...decorators, 'auth'],
   }, 
   TutorshipController: {
     'index': [...decorators],

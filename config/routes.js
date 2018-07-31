@@ -40,6 +40,7 @@ module.exports.routes = {
 
   'DELETE /users': 'Auth.logout',
 
+  'GET /users/update': 'Auth.updateForm',
   'POST /users/update': 'Auth.update',
   
   //
@@ -80,6 +81,8 @@ module.exports.routes = {
   //
 
   'GET /notifications': 'Notification.index',
+  'POST /notifications': 'Notification.create',
+
 
 
   //

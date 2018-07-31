@@ -18,8 +18,9 @@
                 <div class="form-group row horary" data-number="0">
                     <!-- <label for="max" class="col-md-4 text-right"><%= __('Maximum') %></label> -->
                     <input type="number" name="horary[0][max]" min='1' value="1" class="form-control col-md-6 max">
-                    <input type="date" name="horary[0][date]" value="2018-06-12" required class="date">
-                    <input type="time" name="horary[0][time]" value="12:12" required class="time">
+                    <input type="date" name="horary[0][date]" required class="date">
+                    <input type="time" name="horary[0][time]" required class="time">
+                    <input type="text" name="horary[0][place]" value="Biblioteca" required class="place">
                     <button type="button" class="btn btn-danger removeHorary">Quitar horario</button>
                 </div>
 
@@ -37,9 +38,10 @@
     $("#addHorary").click((ev)=>{
         $newHoraryField = $(".horary").last().clone();
         $newHoraryField.children("input.max").attr("value", "1").attr("name", (`horary[${$newHoraryField.data("number")+1}][max]`));
-        $newHoraryField.children("input.date").attr("value", "2018-06-"+(Math.floor(Math.random()*20)+10 ) ).attr("name", (`horary[${$newHoraryField.data("number")+1}][date]`));
-        $newHoraryField.children("input.time").attr("value", Math.floor(Math.random()*13)+10+":"+(Math.floor(Math.random()*50)+10 ) ).attr("name", (`horary[${$newHoraryField.data("number")+1}][time]`));
-    
+        $newHoraryField.children("input.date").attr("value", "").attr("name", (`horary[${$newHoraryField.data("number")+1}][date]`));
+        $newHoraryField.children("input.time").attr("value", "" ).attr("name", (`horary[${$newHoraryField.data("number")+1}][time]`));
+        $newHoraryField.children("input.place").attr("value", "Biblioteca" ).attr("name", (`horary[${$newHoraryField.data("number")+1}][place]`));
+
         $newHoraryField.attr("data-number", $newHoraryField.data("number")+1);
 
         $(".horary").last().after($newHoraryField);

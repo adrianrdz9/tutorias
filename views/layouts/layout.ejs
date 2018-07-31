@@ -29,6 +29,7 @@
     -->
     
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!--STYLES-->
     <link rel="stylesheet" href="/dependencies/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/importer.css">
@@ -38,6 +39,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.9/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="https://js.pusher.com/4.2/pusher.min.js"></script>
+    <script>
+
+      // Enable pusher logging - don't include this in production
+      Pusher.logToConsole = true;
+
+      var pusher = new Pusher('c43f63e12260ac2f1666', {
+        cluster: 'us2',
+        encrypted: true
+      });
+
+      var channel = pusher.subscribe('<%= notificationsChannel %>');
+      channel.bind('newNotification', function(data) {
+        toastr.info(data.notification.title);
+        console.log(data);
+        $("#notificationsDropdown").children("i").css("color", "yellow");
+        $("#notifications").append(`
+          <li class="dropdown-item">${data.notification.title}</li>
+        `)
+      });
+    </script>
+
+
   </head>
 
   <body>
