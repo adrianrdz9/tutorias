@@ -35,6 +35,8 @@ $(".accept-tutorship-request").click((ev)=>{
         success: function(res){
             if(res.err){
                 alert(res.err)
+            }else{
+                window.location.reload();
             }
         }
     }) 
@@ -51,6 +53,8 @@ $(".reject-tutorship-request").click((ev)=>{
         success: function(res){
             if(res.err){
                 alert(res.err)
+            }else{
+                window.location.reload();
             }
         }
     }) 

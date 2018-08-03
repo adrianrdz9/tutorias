@@ -39,7 +39,7 @@
                                 </strong>
                             </div>
                             <div class="col-auto">
-                                <% if(horary.status === null){ %>
+                                <% if(horary.status === null && horary.available > 0){ %>
                                     <button type="button" class="btn btn-primary requestTutorship" data-horary-id="<%= horary.id %>" ><%= __('Request tutorship') %></button>
                                 <% }else{ %>
                                     <% if(horary.status === 0){ %>

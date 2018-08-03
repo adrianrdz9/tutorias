@@ -48,6 +48,28 @@ $ sudo npm install sails -g
     ```sh
     sails lift
     ```
+
+## Uso
+La cuenta de administrador se crea automaticamente con las siguientes credenciales (pueden ser cambiadas despues de iniciar sesión):
+* Numero de cuenta: 312000000
+* Contraseña: admin
+
+El administrador es el encargado de crear las materias para que los tutores ofrezcan tutorias.
+Cualquier usuario se puede convertir en tutor, para ello deben de iniciar sesion y en el menu desplegable con su nombre deben de dar clic en "Hacerme tutor".
+
+Los tutores pueden ofrecer tutorias en cualquier materia que este disponible y pueden elegir su o sus horarios de disponibilidad asi como cupo para alumnos y lugar donde será la tutoria. También pueden elegir a que alumnos aceptar y a quienes no y pueden ver a quienes han aceptado y a quienes han rechazado.
+
+Los usuarios que deseen tomar alguna tutoria deberan estar registrados y buscar entre las tutorias disponibles, elegir un horario y esperar a ser aceptados, el tutor sera notificado en cuanto la solicitud sea realizada y el usuario sera notificado con la eleccion que haga el tutor. Para consultar las tutorias en las que el usuario esta inscrito, puede ir al calendario en el menu desplegable con su nombre y la opcion calendario. En el calendario podra consultar tutorias pasadas y futuras y ver detalles al dar clic en el dia.
+
+Los usuarios registrados (incluidos tutores y administrador) puden actualizar algunos de sus datos, para ello deberan ir al menu desplegable con su nombre y dar clic en actualizar mi cuenta. 
+
+
+
+
+
+
+
+
 ## License
 
 [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0) 

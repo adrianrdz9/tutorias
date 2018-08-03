@@ -43,9 +43,7 @@
 
     <script src="https://js.pusher.com/4.2/pusher.min.js"></script>
     <script>
-
-      // Enable pusher logging - don't include this in production
-      Pusher.logToConsole = true;
+      toastr.options.progressBar = true;
 
       var pusher = new Pusher('c43f63e12260ac2f1666', {
         cluster: 'us2',

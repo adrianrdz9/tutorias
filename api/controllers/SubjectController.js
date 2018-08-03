@@ -46,7 +46,7 @@ module.exports = {
 
   show: async function(req, res){
     const subject = await Subject.findOne({id: req.params.id});
-    var tutorships = await Tutorship.find()
+    var tutorships = await Tutorship.find({subject: req.params.id})
         .populate('subject')
         .populate('owner')
         .populate('horaries')
