@@ -29,10 +29,10 @@
 	"Offer tutorship": "Ofrecer tutoría",
 	"Manage my tutorships": "Administrar mis tutorias",
 	"Become tutor": "Hacerme tutor",
-	"Update password": "Update password",
-	"Old password": "Old password",
-	"New password": "New password",
-	"New password confirmation": "New password confirmation",
-	"Change password": "Change password",
-	"Leave blank if don't want to change it": "Leave blank if don't want to change it"
+	"Update password": "Actualizar contraseña",
+	"Old password": "Contraseña vieja",
+	"New password": "Nueva contraseña",
+	"New password confirmation": "Confirmación de nueva contraseña",
+	"Change password": "Cambiar contraseña",
+	"Leave blank if don't want to change it": "Dejar en blanco si no lo quieres cambiar"
 }

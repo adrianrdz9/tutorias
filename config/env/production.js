@@ -149,7 +149,7 @@ module.exports = {
     ***************************************************************************/
     cors: {
       allowOrigins: [
-         'https://tutoress.herokuapp.com/',
+         'https://tutoress.herokuapp.com',
       ]
     },
 
