@@ -43,10 +43,13 @@ module.exports = {
     const requestor = await User.findOne({id: request.requestor});
     const tutorship = await Tutorship.findOne({id: horary.tutorship});
 
+    const linkTo = "/tutorships/manage";
+
     const requestToId = tutorship.owner;
     await Notification.create({
       user: requestToId,
-      title: requestor.name + " ha solicitado unirse a una de tus tutorias"
+      title: requestor.name + " ha solicitado unirse a una de tus tutorias",
+      linkTo: linkTo
     })
     next();
   },

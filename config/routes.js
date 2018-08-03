@@ -81,7 +81,6 @@ module.exports.routes = {
   //
 
   'GET /notifications': 'Notification.index',
-  'POST /notifications': 'Notification.create',
 
 
 

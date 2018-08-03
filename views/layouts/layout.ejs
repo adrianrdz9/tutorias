@@ -58,7 +58,7 @@
         console.log(data);
         $("#notificationsDropdown").children("i").css("color", "yellow");
         $("#notifications").append(`
-          <li class="dropdown-item">${data.notification.title}</li>
+          <a class="dropdown-item" href="${data.notification.linkTo}">${data.notification.title}</a>
         `)
       });
     </script>

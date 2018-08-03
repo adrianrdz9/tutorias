@@ -16,12 +16,10 @@
                 </div>
 
                 <div class="form-group row horary" data-number="0">
-                    <!-- <label for="max" class="col-md-4 text-right"><%= __('Maximum') %></label> -->
-                    <input type="number" name="horary[0][max]" min='1' value="1" class="form-control col-md-6 max">
-                    <input type="date" name="horary[0][date]" required class="date">
-                    <input type="time" name="horary[0][time]" required class="time">
-                    <input type="text" name="horary[0][place]" value="Biblioteca" required class="place">
-                    <button type="button" class="btn btn-danger removeHorary">Quitar horario</button>
+                    <input type="number" name="horary[0][max]" min='1' value="1" class="form-control col max">
+                    <input type="date" name="horary[0][date]" required class="date form-control col">
+                    <input type="time" name="horary[0][time]" required class="time form-control col">
+                    <input type="text" name="horary[0][place]" value="Biblioteca" required class="place form-control col">
                 </div>
 
                 <div class="form-group text-center">

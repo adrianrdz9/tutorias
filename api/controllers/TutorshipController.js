@@ -217,6 +217,7 @@ module.exports = {
 
       var owner = await Horary.find({id: requestor.horary}).limit(1).populate("tutorship");
       sails.log(owner);
+      var linkTo = "/tutorships/"+owner[0].tutorship.id;
       owner = owner[0].tutorship.owner;
       sails.log(owner);
 
@@ -230,9 +231,11 @@ module.exports = {
 
       var message = "" + owner + " te ha " + (newStatus === 1 ? "aceptado" : "rechazado") + " en una de sus tutorias";
 
+
       await Notification.create({
         title: message,
-        user: requestor
+        user: requestor,
+        linkTo: linkTo
       })
 
 

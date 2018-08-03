@@ -30,6 +30,11 @@ module.exports = {
       required: true
     },
 
+    linkTo: {
+      type: 'string',
+      required: true
+    },
+
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

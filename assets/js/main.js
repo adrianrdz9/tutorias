@@ -67,7 +67,7 @@ $(document).ready(()=>{
                     $("#notifications").append(`<li class="dropdown-item">Sin notificaciones</li>`);
                 else
                     res.forEach((not)=>{
-                        $("#notifications").append(`<li class="dropdown-item">${not.title}</li>`);
+                        $("#notifications").append(`<a class="dropdown-item" href="${not.linkTo}">${not.title}</a>`);
                     })
             }
         })
