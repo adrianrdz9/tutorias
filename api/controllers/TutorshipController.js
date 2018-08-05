@@ -8,8 +8,9 @@
 module.exports = {
   
 
-
+  // GET /tutorships
   index: async function (req, res) {
+    // Populate all data related to all tutorships
     var tutorships = await Tutorship.find()
         .populate('subject')
         .populate('owner')
@@ -36,6 +37,7 @@ module.exports = {
     });
   },
 
+  // GET /tutorships/new
   create: async function(req, res){
     // Validate that user is a tutor
     if(req.session.user.is_tutor === true){
@@ -45,6 +47,7 @@ module.exports = {
     }
   },
 
+  // POST /tutorships
   store: async function(req, res){
     //Only the tutors can create new tutorships
     if(req.session.user.is_tutor === true){
@@ -76,7 +79,9 @@ module.exports = {
     }
   }, 
 
+  // GET /tutorships/:id
   show: async function(req, res){
+    // Populate all data related to a specific tutorship
     var tutorship = await Tutorship.find({id: req.params.id}).limit(1)
         .populate('subject')
         .populate('owner')
@@ -122,6 +127,7 @@ module.exports = {
     });
   },
 
+  // POST /tutorships/:id/request
   request: async function(req, res){
     try{
       //
@@ -140,8 +146,9 @@ module.exports = {
         res.status(429);
         res.json({error: "Ya solicitaste esta tutoría"})
       }
-      // ─────────────────────────────────────────────────────────────────
-
+      //
+      // ─── VALIDAR DISPONIBILIDAD Y REALIZAR LA SOLICITUD ──────────────
+      //     
       if(await Horary.is_available(horaryRequested)){
         await TutorshipRequest.create({
           requestor: req.session.userId,
@@ -152,20 +159,27 @@ module.exports = {
         res.status(400);
         res.json({error: "Ya no hay cupo para esta tutoria"});
       }
+      // ─────────────────────────────────────────────────────────────────
     }catch(err){
       res.status(500);
       res.json(err);
     }
   },
 
+  // GET /tutorships/manage
   manage: async function(req, res){
+    // Only tutor can manage their tutorships
     if(!req.session.user.is_tutor){
       res.redirectF("/tutorships", {error: ["No eres tutor"]})
     }
 
+    // Get current user tutorships
     var tutorships = await Tutorship.find({owner: req.session.userId})
         .populate('subject')
     
+    //
+    // ─── GET ALL DATA RELATED TO THE USER'S TUTORSHIPS (REQUESTS, AVAILABILITY, ETC.) 
+    //
     for (let i = 0; i < tutorships.length; i++) {
       var tutorship = tutorships[i];
 
@@ -185,19 +199,26 @@ module.exports = {
 
       tutorships[i] = tutorship;
     }
+    // ─────────────────────────────────────────────────────────────────
     return res.view('tutorships/manage', {
       tutorships
     });
   },
 
+  // POST /tutorships/request/:id
   respondRequest: async function(req, res){
+    // Get current request
     var request = await TutorshipRequest.find({id: req.params.id}).limit(1).populate('horary');
+    // Validate request existance
     if(!request) {
       res.status(400);
       return res.json({error: "No existe esta solicitud"});
     }
     request = request[0];
 
+    //
+    // ─── VALIDATE HORARY AVAILABILITY BEFORE ACCEPTING THE REQUEST ───
+    //
     var newStatus;
     if(req.body.action === "reject"){
       newStatus = 2;
@@ -211,24 +232,25 @@ module.exports = {
         newStatus = 1;
       } 
 
+      //
+      // ─── ADD USER TO THE HORARY ──────────────────────────────────────
+      //
       var requestor = await TutorshipRequest.update({id: request.id}, {status: newStatus}).fetch();
       requestor = requestor[0];
-      sails.log(requestor);
 
       var owner = await Horary.find({id: requestor.horary}).limit(1).populate("tutorship");
-      sails.log(owner);
+
       var linkTo = "/tutorships/"+owner[0].tutorship.id;
       owner = owner[0].tutorship.owner;
-      sails.log(owner);
 
       owner = await User.find({id: owner}).limit(1);
       owner = owner[0].name;
-      sails.log(owner);
-
 
       requestor = requestor.requestor;
-      sails.log(requestor);
 
+      //
+      // ─── BUILD AND SEND NOTIFICATION TO THE USER ─────────────────────
+      //
       var message = "" + owner + " te ha " + (newStatus === 1 ? "aceptado" : "rechazado") + " en una de sus tutorias";
 
 
@@ -238,12 +260,12 @@ module.exports = {
         linkTo: linkTo
       })
 
-
+      // ─────────────────────────────────────────────────────────────────
       return res.ok();
     }else{
       return res.json({error: "Ya no hay cupo"});
     }
-
+    // ─────────────────────────────────────────────────────────────────
    
 
   }

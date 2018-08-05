@@ -1,6 +1,4 @@
-//Send session.custom object to view locals
-const bcrypt = require("bcrypt");
-
+//Send session.custom object and other variables to view locals
 module.exports = function(req, res, next){
     
     if(req.session.custom !== undefined && req.session.custom.locals){
@@ -11,6 +9,8 @@ module.exports = function(req, res, next){
     }
     //Remove custom locals from the session
     req.session.custom = undefined;
+
+    //Make moment available in view
     const moment = require("moment");
     moment.locale("es");
     res.locals.moment = moment

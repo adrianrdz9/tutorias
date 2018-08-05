@@ -8,10 +8,9 @@
 module.exports = {
   
 
-  /**
-   * `SubjectController.index()`
-   */
+  // GET /subjects
   index: async function (req, res) {
+    // Get all the subjects and the tutorship availability in that subject
     var subjects = await Subject.find().populate("tutorships");
     for(i in subjects){
       subjects[i].available = subjects[i].tutorships.length
@@ -19,7 +18,9 @@ module.exports = {
     return res.view('subjects/index', {subjects});
   },
 
+  // GET /subjects/new
   create: async function(req, res){
+    // Only display the "new subject" form to the admin
     if(await User.is_admin({id: req.session.userId}) === true){
       return res.view('subjects/new');
     }else{
@@ -27,6 +28,7 @@ module.exports = {
     }
   },
 
+  // POST /subjects
   store: async function(req, res){
     //Only the admin can add new subjects
     if(await User.is_admin({id: req.session.userId}) === true){
@@ -44,7 +46,9 @@ module.exports = {
     }
   }, 
 
+  // GET /subjects/:id
   show: async function(req, res){
+    // Populate all data related to the tutorships of an specific suject
     const subject = await Subject.findOne({id: req.params.id});
     var tutorships = await Tutorship.find({subject: req.params.id})
         .populate('subject')

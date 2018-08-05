@@ -6,7 +6,9 @@
  */
 
 module.exports = {
+    // GET /notifications
     index: async function(req, res){
+        // Return current user notifications
         return res.json(await Notification.find({user: req.session.userId}));
     }, 
 

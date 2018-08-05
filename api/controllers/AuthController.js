@@ -9,6 +9,8 @@
  const moment = require("moment");
 
 module.exports = {
+
+  // POST /users/sign_up
   signup: async function(req, res){
     //Save the old data so that the user doesnt have to re-introduce it
     req.session.custom = {
@@ -45,11 +47,13 @@ module.exports = {
     }
   },
 
+  // GET /users/sign_up
   signupForm: function(req, res){
     //Display sign up form
     return res.view('users/sign_up')
   },
 
+  // POST /users/login
   login: async function(req, res){
     //Save the old data so that the user doesnt have to re-introduce it
     req.session.custom = {
@@ -83,23 +87,32 @@ module.exports = {
     }
   },
 
+  // GET /users/login
   loginForm: function(req, res){
     //Display login form
     return res.view('users/login')
   },
 
+  // GET /users/update
   updateForm: async function(req, res){
+    // Get current user data
     user = await User.find({id: req.session.userId}).limit(1);
     user = _.pick(user[0], ["name", "account_number", "is_tutor"]);
+    // Show update form with current user data
     return res.view('users/update', {user});
   },
 
+  // POST /users/update
   update: async function(req, res){
+    //
+    // ─── BUILD OBJECT WITH VALUES TO BE UPDATED ──────────────────────
+    //
     var newData = {};
     if(req.body.name){
       newData.name = req.body.name;
     }
 
+    // Validate password if the user wants to change it
     if(req.body.password){
       const match = await bcrypt.compareSync(req.body.old_password, req.session.user.password);
       if(match){
@@ -112,6 +125,7 @@ module.exports = {
         res.redirectF("/users/update", {error: "Contraseña incorrecta"})
       }
     }
+    // ─────────────────────────────────────────────────────────────────
 
     if(req.body.is_tutor){
       //Once the user becomes tutor it cant be undone
@@ -121,16 +135,24 @@ module.exports = {
     return res.redirectF('/', {success: ["Datos actualizados"]});
   },
 
+  // DELETE /users
   logout: function(req, res){
+      // Delete user session
       req.session.userId = undefined;
       res.ok();
   },
 
+  // GET /users/calendar
   calendar: function(req, res){
+    // Show the calendar
     return res.view('users/calendar');
   },
 
+  // GET /events
   events: async function(req, res){
+    //
+    // ─── RETURN TUTORSHIP APPOINTMENTS WITHIN A DATE RANGE ─────────────
+    //  
     const date = req.query.date.split('-');
     var events = await User.find({id: req.session.userId}).limit(1).populate("classes");
     events = events[0].classes;
@@ -144,6 +166,8 @@ module.exports = {
       var subject = await Tutorship.find({
         id: events[i].tutorship
       }).limit(1).populate("subject").populate("owner");
+
+      // Build the message to be displayed
       var tutor = subject[0].owner.name;
       subject = subject[0].subject.title;
 
@@ -153,6 +177,7 @@ module.exports = {
       events[i].title = subject;
       events[i].description = `Tutor: ${tutor}<br>Hora: ${time}<br>Lugar: ${place}`
     }
+    // ─────────────────────────────────────────────────────────────────
 
     res.json(events)
   }

@@ -7,16 +7,9 @@
  * For more information on configuring policies, check out:
  * https://sailsjs.com/docs/concepts/policies
  */
+// This policies are necessary to al views
 const decorators = ['flashMessages', 'parseCustomLocals', 'getUser'];
 module.exports.policies = {
-
-  /***************************************************************************
-  *                                                                          *
-  * Default policy for all controllers and actions, unless overridden.       *
-  * (`true` allows public access)                                            *
-  *                                                                          *
-  ***************************************************************************/
-
   '*': [...decorators, 'auth'],
   AuthController: {
     '*': [...decorators],
